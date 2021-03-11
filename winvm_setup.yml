@@ -1,0 +1,7 @@
+---
+- name: test
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: check connection
+      wait_for_connection:
