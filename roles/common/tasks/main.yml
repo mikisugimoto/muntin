@@ -1,0 +1,15 @@
+---
+- name: Install packages
+  win_chocolatey:
+    name: "{{ lookup('community.general.flattened', base_packages) }}"
+    state: present
+  tags:
+    - packages
+
+- name: install Win32-OpenSSH service
+  win_chocolatey:
+    name: openssh
+    package_params: /SSHServerFeature
+    state: present
+  tags:
+    - packages

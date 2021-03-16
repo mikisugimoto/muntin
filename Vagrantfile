@@ -5,7 +5,7 @@
 require 'yaml'
  
 # Read YAML file with box details
-inventory = YAML.load_file('inventory.yml')
+inventory = YAML.load_file('inventory/hosts.yml')
 
 Vagrant.configure("2") do |config|
     inventory['all']['children']['winvm']['hosts'].each do |host,details|
@@ -17,7 +17,7 @@ Vagrant.configure("2") do |config|
             hst.vm.guest = :windows 
             hst.vm.communicator = "winrm"
             hst.vm.network :private_network, ip: details['ansible_host']
-            inventory['all']['vars']['vagrant_ports'].each do |protocol,details|
+            inventory['all']['children']['winvm']['vars']['vagrant_ports'].each do |protocol,details|
                 hst.vm.network :forwarded_port, guest: details['guest'], host: details['host'], id: protocol
             end
 
@@ -30,7 +30,7 @@ Vagrant.configure("2") do |config|
             config.vm.provision "ansible" do |ansible|
                 ansible.playbook = "winvm_setup.yml"
                 ansible.limit = "all"
-                ansible.inventory_path = "inventory.yml"
+                ansible.inventory_path = "inventory/hosts.yml"
                 ansible.verbose = "-vv"
             end
         end
