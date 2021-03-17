@@ -1,6 +1,6 @@
 ---
 - name: Setup microservices
-  hosts: all
+  hosts: winvm
   gather_facts: no
   roles:
     - common
